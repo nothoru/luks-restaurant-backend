@@ -39,6 +39,7 @@ MANIFEST
 /media/
 
 # Local environment
+.dockerignore
 venv/
 .venv/
 env/
@@ -52,3 +53,4 @@ ENV/
 
 # ChromaDB local instance
 chroma_db/
+
