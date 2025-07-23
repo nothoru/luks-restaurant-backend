@@ -43,10 +43,8 @@ jobs:
       contents: read #This is required for actions/checkout
 
     needs: build
-    
 
     steps:
-      
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -58,7 +56,8 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'luksbygoodchoice'
-          slot-name: 'Production'
-          images: 'luksrestaurantacr.azurecr.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_1D470A439D844738A9EAABF61E0B6BB8 }}/luks-restaurant-backend:${{ github.sha }}'
-          
+        app-name: "luksbygoodchoice"
+        slot-name: "Production"
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_... }}
+        images: "${{ env.REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+        startup-command: "gunicorn --chdir /app -w 4 backend.wsgi:application"
