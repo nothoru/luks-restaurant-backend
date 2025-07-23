@@ -62,3 +62,5 @@ __pycache__/
 /media/
 /staticfiles/
 /chroma_db/
+
+/media/
