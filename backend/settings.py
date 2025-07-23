@@ -37,6 +37,8 @@ DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
+ALLOWED_HOSTS.append('.azurewebsites.net')
+
 
 # Application definition
 
