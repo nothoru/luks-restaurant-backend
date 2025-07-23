@@ -1,7 +1,6 @@
 # Stage 1: Build the virtual environment with all dependencies
 FROM python:3.11 as builder
 
-# Install system dependencies required by packages like OpenCV, Pillow, and psycopg2
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libpq-dev \
@@ -14,11 +13,32 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-# Create and activate a virtual environment
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Upgrade pip and install python packages
 RUN pip install --upgrade pip
-# The --no-cache flag is added here to reduce memory usage during build
-RUN pip install --no-cache-dir --no-cache -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+
+# Stage 2: Create the final, slim production image
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN addgroup --system app && adduser --system --group app
+
+COPY --from=builder /opt/venv /opt/venv
+
+# Explicitly copy the project files with correct ownership
+COPY --chown=app:app . .
+
+ENV PATH="/opt/venv/bin:$PATH"
+
+# This chown is now redundant but harmless, we can leave it
+RUN chown -R app:app /app
+
+USER app
+
+EXPOSE 8000
+
+CMD ["gunicorn", "--chdir", "/app", "-w", "4", "backend.wsgi:application"]
