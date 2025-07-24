@@ -1,0 +1,32 @@
+# requirements.in
+# This file specifies the high-level packages our project needs.
+# The 'pip-compile' command will use this to generate a locked 'requirements.txt'.
+
+# --- Django Core & Web Server ---
+django~=5.0
+djangorestframework~=3.15
+django-cors-headers~=4.3
+psycopg2-binary~=2.9
+gunicorn~=22.0
+whitenoise~=6.6
+dj-database-url~=2.1
+python-dotenv~=1.0
+
+# --- Authentication ---
+djangorestframework-simplejwt~=5.3
+# 'jwt' is a dependency of simplejwt, we don't need to specify it.
+
+# --- AI, ML, and Data Libraries ---
+# Pinning these helps the resolver find a solution faster.
+textblob~=0.18.0
+deepface~=0.0.79
+opencv-python~=4.9
+tensorflow~=2.16
+langchain-community~=0.2
+langchain-huggingface~=0.0.3
+google-generativeai~=0.5
+sentence-transformers~=2.7
+chromadb~=0.5
+
+# --- Azure Storage ---
+django-storages[azure]~=1.14
